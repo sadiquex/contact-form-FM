@@ -40,7 +40,8 @@ export default function App() {
 
   const validateField = async (field: keyof FormData, value: any) => {
     try {
-      await Yup.reach(validationSchema, field).validate(value);
+      const fieldSchema = Yup.reach(validationSchema, field) as Yup.Schema<any>;
+      await fieldSchema.validate(value);
       setErrors((prevErrors) => ({ ...prevErrors, [field]: "" }));
     } catch (err) {
       setErrors((prevErrors) => ({
@@ -53,7 +54,8 @@ export default function App() {
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type, checked } = e.target;
+    const target = e.target as HTMLInputElement;
+    const { name, value, type, checked } = target;
     const fieldValue = type === "checkbox" ? checked : value;
 
     setFormData((prevFormData) => ({
@@ -85,15 +87,15 @@ export default function App() {
   };
 
   return (
-    <div className="w-full h-screen bg-primary-200 flex items-center justify-center">
+    <div className="w-full h-screen bg-primary-200 px-3 sm:p-0 flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white py-12 px-6 rounded-lg min-w-[600px] space-y-4"
+        className="bg-white py-12 px-6 rounded-lg min-w-[40%] space-y-4"
       >
         <h3 className="text-2xl font-medium text-neutral-900">Contact Us</h3>
 
         {/* first name and last name */}
-        <div className="w-full flex gap-2">
+        <div className="w-full flex flex-col sm:flex-row gap-2">
           <div className="flex flex-col flex-1">
             <label htmlFor="firstName" className="text-label">
               First Name <sup className="text-primary-600">*</sup>
@@ -150,7 +152,7 @@ export default function App() {
           <label htmlFor="queryType" className="text-label">
             Query Type <sup className="text-primary-600">*</sup>
           </label>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <label
               htmlFor="general-equity"
               className="border border-gray-500 py-3 px-4 rounded-md flex-1"
