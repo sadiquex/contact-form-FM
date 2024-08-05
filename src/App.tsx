@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import * as Yup from "yup";
 
-// Define types for form data and errors
 interface FormData {
   firstName: string;
   lastName: string;
